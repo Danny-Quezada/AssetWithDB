@@ -38,14 +38,14 @@ namespace DepreciationDBApp.Infrastructure.Repositories
                 {
                     throw new ArgumentException("Object null");
                 }
-                Asset asset=FindById(t.Id);
+                Asset asset = FindById(t.Id);
                 if (asset == null)
                 {
                     throw new Exception($"Object with Id {t.Id} not exist");
                 }
                 depreciationDbContext.Assets.Remove(asset);
-                int result=depreciationDbContext.SaveChanges();
-                return result>0;
+                int result = depreciationDbContext.SaveChanges();
+                return result > 0;
             }
             catch (Exception)
             {
@@ -70,7 +70,7 @@ namespace DepreciationDBApp.Infrastructure.Repositories
         {
             try
             {
-                
+
                 List<Asset> assets = GetAll();
                 return assets.Find(x => x.Id == id);
             }
@@ -85,7 +85,7 @@ namespace DepreciationDBApp.Infrastructure.Repositories
             try
             {
                 List<Asset> assets = GetAll();
-                return (List<Asset>)assets.Where<Asset>(x => x.Name.Equals(name,StringComparison.CurrentCultureIgnoreCase));
+                return (List<Asset>)assets.Where<Asset>(x => x.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase)).ToList();
             }
             catch
             {
@@ -109,8 +109,29 @@ namespace DepreciationDBApp.Infrastructure.Repositories
         {
             try
             {
-                depreciationDbContext.Assets.Update(t);
+                if (t == null)
+                {
+                    throw new ArgumentNullException("Object null");
+                }
+                Asset asset = FindById(t.Id);
+                if (asset == null)
+                {
+                    throw new Exception($"Object with Id {t.Id} not exist");
+                }
+
+                asset.Name = t.Name;
+                asset.Description = t.Description;
+                asset.Code = t.Code;
+                asset.Id = t.Id;
+                asset.IsActive = t.IsActive;
+                asset.AmountResidual = t.AmountResidual;
+                asset.Amount = t.Amount;
+                asset.Status = t.Status;
+                asset.Terms = t.Terms;
+
+                depreciationDbContext.Assets.Update(asset);
                 return depreciationDbContext.SaveChanges();
+                
             }
             catch
             {
