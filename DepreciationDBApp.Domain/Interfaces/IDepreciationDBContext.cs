@@ -11,6 +11,8 @@ namespace DepreciationDBApp.Domain.Interfaces
 {
     public interface IDepreciationDbContext
     {
+        public DbSet<AssetEmployee> AssetEmployees { get; set; }
+        public DbSet<Employee> Employees { get; set; }
         public DbSet<Asset> Assets { get; set; }
 
         public int SaveChanges();

@@ -52,7 +52,7 @@ namespace DepreciationDBApp.Infrastructure.Repositories
                 return false;
             }
         }
-
+    
         public Asset FindByCode(string code)
         {
             try
