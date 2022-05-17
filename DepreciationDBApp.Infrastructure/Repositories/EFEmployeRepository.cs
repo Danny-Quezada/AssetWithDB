@@ -1,4 +1,5 @@
 ﻿using DepreciationDBApp.Domain.Entities;
+using DepreciationDBApp.Domain.Enums;
 using DepreciationDBApp.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -20,11 +21,26 @@ namespace DepreciationDBApp.Infrastructure.Repositories
         {
             try
             {
+                ValidateEmployee(t);
                 depreciationDbContext.Employees.Add(t);
+                depreciationDbContext.SaveChanges();
             }
             catch
             {
                 throw;
+            }
+        }
+        private void ValidateEmployee(Employee employee)
+        {
+            if (employee == null)
+            {
+                throw new ArgumentException("El objeto employee no puede ser nulo");
+
+            }
+            if (string.IsNullOrEmpty(employee.Email))
+            {
+                throw new ArgumentException("El email no puede ser nulo o estar vacio");
+
             }
         }
 
@@ -95,6 +111,85 @@ namespace DepreciationDBApp.Infrastructure.Repositories
         public List<Employee> GetAll()
         {
             return depreciationDbContext.Employees.ToList();
+        }
+
+        public bool SetAssetsToEmployee(Employee employee, List<Asset> assets)
+        {
+            if (employee == null && assets == null)
+            {
+                throw new ArgumentException("Los objetos no pueden ser nulos");
+            }
+            Employee Valideemployee = FindByDni(employee.Dni);
+
+            if (Valideemployee == null)
+            {
+                throw new ArgumentException($"El objeto con {employee.Dni} no se encuentra en la base de datos.");
+            }
+            foreach (Asset asset in assets)
+            {
+                if (asset == null)
+                {
+                    throw new ArgumentException("El asset no puede ser nulo");
+                }
+                if (asset.Status == StatusAsset.Asignado.ToString())
+                {
+                    throw new ArgumentException($"El asset {asset.Name} ya esta asignado");
+                }
+                if (asset.IsActive == false)
+                {
+                    throw new ArgumentException($"El asset {asset.Name} no se encuentra activo");
+                }
+            }
+
+            foreach (Asset asset in assets)
+            {
+                AssetEmployee assetEmployee = new AssetEmployee
+                {
+                    Asset = asset,
+                    Employee = employee,
+                    AssetId = asset.Id,
+                    IsActive = asset.IsActive,
+                    Date = DateTime.Now,
+                    EmployeeId = employee.Id,
+
+                };
+                depreciationDbContext.AssetEmployees.Add(assetEmployee);
+            }
+            return true;
+        }
+
+        public bool SetAssetToEmployee(Employee employee, Asset asset)
+        {
+
+            if (employee == null && asset == null)
+            {
+                throw new ArgumentException("Los objetos no pueden ser nulos");
+            }
+            Employee valideEmployee = FindByDni(employee.Dni);
+            if (valideEmployee == null)
+            {
+                throw new ArgumentException($"El empleado {employee.Names} no se encuentra en la base de datos");
+            }
+            if (asset.Status == StatusAsset.Asignado.ToString())
+            {
+                throw new ArgumentException($"El asset {asset.Name} se encuentra ya asignado");
+            }
+            if (asset.IsActive == false)
+            {
+                throw new ArgumentException($"El asset {asset.Name} no se encuentra activo");
+            }
+            AssetEmployee assetEmployee = new AssetEmployee
+            {
+                Asset = asset,
+                AssetId = asset.Id,
+                Date = DateTime.Now,
+                IsActive = asset.IsActive,
+                Employee = employee,
+                EmployeeId = employee.Id,
+
+            };
+            depreciationDbContext.AssetEmployees.Add(assetEmployee);
+            return true;
         }
 
         public int Update(Employee t)

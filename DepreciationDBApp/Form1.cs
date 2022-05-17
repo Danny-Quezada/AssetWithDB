@@ -114,7 +114,7 @@ namespace DepreciationDBApp.Forms
 
         private void dgvAsset_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if(e.RowIndex > 0)
+            if(e.RowIndex >= 0)
             {
 //                Asset asset = assetService.FindById(e.RowIndex);
                 Asset asset = assetService.GetAll()[e.RowIndex];
@@ -235,6 +235,11 @@ namespace DepreciationDBApp.Forms
                     MessageBox.Show("Only letters are allowed");
                 }
             }
+        }
+
+        private void btnEmployee_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

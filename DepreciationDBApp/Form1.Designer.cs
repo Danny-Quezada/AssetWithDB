@@ -51,6 +51,7 @@ namespace DepreciationDBApp.Forms
             this.flpButtons = new System.Windows.Forms.FlowLayoutPanel();
             this.cmbSelectSearch = new System.Windows.Forms.ComboBox();
             this.btnSearch = new System.Windows.Forms.Button();
+            this.btnEmployee = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAsset)).BeginInit();
             this.gbInfo.SuspendLayout();
             this.flpButtons.SuspendLayout();
@@ -248,9 +249,10 @@ namespace DepreciationDBApp.Forms
             this.flpButtons.Controls.Add(this.btnGet);
             this.flpButtons.Controls.Add(this.btnDelete);
             this.flpButtons.Controls.Add(this.btnUpdate);
+            this.flpButtons.Controls.Add(this.btnEmployee);
             this.flpButtons.Location = new System.Drawing.Point(18, 263);
             this.flpButtons.Name = "flpButtons";
-            this.flpButtons.Size = new System.Drawing.Size(257, 63);
+            this.flpButtons.Size = new System.Drawing.Size(257, 80);
             this.flpButtons.TabIndex = 8;
             // 
             // cmbSelectSearch
@@ -275,6 +277,16 @@ namespace DepreciationDBApp.Forms
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
+            // btnEmployee
+            // 
+            this.btnEmployee.Location = new System.Drawing.Point(100, 32);
+            this.btnEmployee.Name = "btnEmployee";
+            this.btnEmployee.Size = new System.Drawing.Size(104, 23);
+            this.btnEmployee.TabIndex = 5;
+            this.btnEmployee.Text = "Add Employee";
+            this.btnEmployee.UseVisualStyleBackColor = true;
+            this.btnEmployee.Click += new System.EventHandler(this.btnEmployee_Click);
             // 
             // Form1
             // 
@@ -323,6 +335,7 @@ namespace DepreciationDBApp.Forms
         private System.Windows.Forms.ComboBox cmbStatus;
         private System.Windows.Forms.ComboBox cmbSelectSearch;
         private System.Windows.Forms.Button btnSearch;
+        private System.Windows.Forms.Button btnEmployee;
     }
 }
 

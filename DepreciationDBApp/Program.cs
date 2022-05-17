@@ -56,6 +56,8 @@ namespace DepreciationDBApp
             services.AddScoped<IDepreciationDbContext, DepreciationDBContext>();
             services.AddScoped<IAssetRepository, EFAssetRepository>();
             services.AddScoped<IAssetService, AssetService>();
+            services.AddScoped<IEmployeeRepository, EFEmployeRepository>();
+            services.AddScoped<IEmployeeServices, EmployeeService>();
             services.AddScoped<Form1>();
 
             using (var serviceScope = services.BuildServiceProvider())
