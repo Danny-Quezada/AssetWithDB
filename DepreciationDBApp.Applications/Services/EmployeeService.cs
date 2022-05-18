@@ -13,7 +13,7 @@ namespace DepreciationDBApp.Applications.Services
     {
         private IEmployeeRepository employeeRepository;
 
-        EmployeeService(IEmployeeRepository employeeRepositoryP)
+       public EmployeeService(IEmployeeRepository employeeRepositoryP)
         {
             this.employeeRepository = employeeRepositoryP;
         }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DepreciationDBApp.Applications.Interfaces
 {
-   public  interface IEmployeeServices: IService<Employee>
+   public interface IEmployeeServices: IService<Employee>
     {
         Employee FindByDni(string dni);
         Employee FindByEmail(string email);

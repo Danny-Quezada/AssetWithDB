@@ -17,10 +17,11 @@ namespace DepreciationDBApp.Forms
     public partial class Form1 : Form
     {
         private IAssetService assetService;
-
-        public Form1(IAssetService assetService)
+        private IEmployeeServices employeeServices;
+        public Form1(IEmployeeServices eemployeeServices, IAssetService assetService)
         {
             this.assetService = assetService;
+            this.employeeServices = eemployeeServices;
             InitializeComponent();
             
         }
@@ -239,7 +240,8 @@ namespace DepreciationDBApp.Forms
 
         private void btnEmployee_Click(object sender, EventArgs e)
         {
-
+            FrmEmployee frmEmployee = new FrmEmployee(employeeServices,assetService);
+            frmEmployee.ShowDialog();
         }
     }
 }
