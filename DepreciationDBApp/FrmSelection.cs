@@ -17,7 +17,7 @@ namespace DepreciationDBApp.Forms
         private IAssetService AssetService;
         private IEmployeeServices EmployeeServices;
         private string DNI;
-        public FrmSelection(string pDNI,IEmployeeServices employeeServices,IAssetService assetService)
+        public FrmSelection(string pDNI, IEmployeeServices employeeServices, IAssetService assetService)
         {
             this.DNI = pDNI;
             this.EmployeeServices = employeeServices;
@@ -38,8 +38,16 @@ namespace DepreciationDBApp.Forms
         {
             if (e.RowIndex >= 0)
             {
-                int Id=Convert.ToInt32(dgvAssets.Rows[e.RowIndex].Cells[0].Value);
-                EmployeeServices.SetAssetToEmployee(employee: EmployeeServices.FindByDni(DNI),asset: AssetService.FindById(Convert.ToInt32(Id)));
+                try
+                {
+                    int Id = Convert.ToInt32(dgvAssets.Rows[e.RowIndex].Cells[0].Value);
+                    EmployeeServices.SetAssetToEmployee(employee: EmployeeServices.FindByDni(DNI), asset: AssetService.FindById(Convert.ToInt32(Id)));
+                    FillDGV();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
     }

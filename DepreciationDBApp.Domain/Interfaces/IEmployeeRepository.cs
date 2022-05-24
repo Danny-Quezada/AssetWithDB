@@ -1,4 +1,5 @@
 ﻿using DepreciationDBApp.Domain.Entities;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace DepreciationDBApp.Domain.Interfaces
         IEnumerable<Employee> FindByLastname(string lastnames);
         bool SetAssetToEmployee(Employee employee, Asset asset);
         bool SetAssetsToEmployee(Employee employee, List<Asset> assets);
-
+        IDbContextTransaction GetTransaction();
         
     }
 }

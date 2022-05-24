@@ -1,11 +1,13 @@
 ﻿using DepreciationDBApp.Domain.Entities;
 using DepreciationDBApp.Domain.Enums;
 using DepreciationDBApp.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace DepreciationDBApp.Infrastructure.Repositories
 {
@@ -22,7 +24,7 @@ namespace DepreciationDBApp.Infrastructure.Repositories
             try
             {
                 ValidateEmployee(t);
-                depreciationDbContext.Employees.Add(t);
+                depreciationDbContext.Employee.Add(t);
                 depreciationDbContext.SaveChanges();
             }
             catch
@@ -58,7 +60,7 @@ namespace DepreciationDBApp.Infrastructure.Repositories
                 {
                     throw new Exception($"Object with Id {t.Id} not exist");
                 }
-                depreciationDbContext.Employees.Remove(asset);
+                depreciationDbContext.Employee.Remove(asset);
                 int result = depreciationDbContext.SaveChanges();
                 return result > 0;
             }
@@ -110,7 +112,7 @@ namespace DepreciationDBApp.Infrastructure.Repositories
 
         public List<Employee> GetAll()
         {
-            return depreciationDbContext.Employees.ToList();
+            return depreciationDbContext.Employee.ToList();
         }
 
         public bool SetAssetsToEmployee(Employee employee, List<Asset> assets)
@@ -160,8 +162,7 @@ namespace DepreciationDBApp.Infrastructure.Repositories
 
         public bool SetAssetToEmployee(Employee employee, Asset asset)
         {
-
-            if (employee == null && asset == null)
+                        if (employee == null && asset == null)
             {
                 throw new ArgumentException("Los objetos no pueden ser nulos");
             }
@@ -183,18 +184,22 @@ namespace DepreciationDBApp.Infrastructure.Repositories
                 Asset = asset,
                 AssetId = asset.Id,
                 Date = DateTime.Now,
-                IsActive = asset.IsActive,
+                IsActive = true,
                 Employee = employee,
                 EmployeeId = employee.Id,
-
             };
             depreciationDbContext.AssetEmployees.Add(assetEmployee);
+            depreciationDbContext.SaveChanges();
             return true;
         }
 
         public int Update(Employee t)
         {
             throw new NotImplementedException();
+        }
+        public IDbContextTransaction GetTransaction()
+        {
+            return ((DepreciationDBApp.Domain.DepreciationDBApp.Domain.DepreciationDBContext)depreciationDbContext).Database.BeginTransaction();
         }
     }
 }
